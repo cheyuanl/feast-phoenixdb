@@ -17,15 +17,15 @@ import phoenixdb
 import phoenixdb.cursor
 
 
-class MySQLOnlineStoreConfig(FeastConfigBaseModel):
+class PhoenixDBOnlineStoreConfig(FeastConfigBaseModel):
     """
     Configuration for the MySQL online store.
     NOTE: The class *must* end with the `OnlineStoreConfig` suffix.
     """
 
     type: Literal[
-        "mysql", "feast_custom_online_store.mysql_online_store.MySQLOnlineStore"
-    ] = "feast_custom_online_store.mysql_online_store.MySQLOnlineStore"
+        "mysql", "feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore"
+    ] = "feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore"
 
     host: Optional[StrictStr] = None
     user: Optional[StrictStr] = None
@@ -33,7 +33,7 @@ class MySQLOnlineStoreConfig(FeastConfigBaseModel):
     database: Optional[StrictStr] = None
 
 
-class MySQLOnlineStore(OnlineStore):
+class PhoenixDBOnlineStore(OnlineStore):
     """
     An online store implementation that uses MySQL.
     NOTE: The class *must* end with the `OnlineStore` suffix.
@@ -44,7 +44,7 @@ class MySQLOnlineStore(OnlineStore):
     def _get_conn(self, config: RepoConfig):
 
         online_store_config = config.online_store
-        assert isinstance(online_store_config, MySQLOnlineStoreConfig)
+        assert isinstance(online_store_config, PhoenixDBOnlineStoreConfig)
 
         if not self._conn:
             self._conn = phoenixdb.connect(

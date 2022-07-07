@@ -3,3 +3,4 @@ registry: data/registry.db
 provider: local
 online_store:
   type: feast_custom_online_store.mysql_online_store.MySQLOnlineStore
+  host: http://localhost:8765

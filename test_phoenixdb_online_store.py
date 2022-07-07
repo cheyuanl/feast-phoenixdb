@@ -37,7 +37,7 @@ def test_cli():
 
     try:
         if (
-            "feast_custom_online_store.mysql_online_store.MySQLOnlineStore"
+            "feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore"
             not in output
         ):
             raise Exception(

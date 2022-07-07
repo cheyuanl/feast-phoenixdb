@@ -11,7 +11,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     packages=find_packages(include=["feast_custom_online_store"]),
     install_requires=[
-        "mysql-connector-python",
+        "phoenixdb==1.1",
         "feast==0.12.1"
     ],
     license="Apache",
