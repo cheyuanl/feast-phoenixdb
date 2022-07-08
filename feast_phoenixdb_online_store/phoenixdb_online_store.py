@@ -19,12 +19,12 @@ import phoenixdb.cursor
 
 class PhoenixDBOnlineStoreConfig(FeastConfigBaseModel):
     """
-    Configuration for the MySQL online store.
+    Configuration for the PhoenixDB online store.
     NOTE: The class *must* end with the `OnlineStoreConfig` suffix.
     """
 
     type: Literal[
-        "mysql", "feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore"
+        "phoenixDB", "feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore"
     ] = "feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore"
 
     host: Optional[StrictStr] = None
@@ -35,7 +35,7 @@ class PhoenixDBOnlineStoreConfig(FeastConfigBaseModel):
 
 class PhoenixDBOnlineStore(OnlineStore):
     """
-    An online store implementation that uses MySQL.
+    An online store implementation that uses PhoenixDB.
     NOTE: The class *must* end with the `OnlineStore` suffix.
     """
 
@@ -64,8 +64,6 @@ class PhoenixDBOnlineStore(OnlineStore):
 
         conn = self._get_conn(config)
         cur = conn.cursor()
-
-        phoenixdb
 
         project = config.project
 

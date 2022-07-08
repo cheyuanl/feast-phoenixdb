@@ -1,3 +1,3 @@
-# Feast Custom Online Store
+# Feast PhoenixDB Online Store
 
-This custom Feast online store uses mysql as the underlying store.
+This custom Feast online store uses PhoenixDB as the underlying store.

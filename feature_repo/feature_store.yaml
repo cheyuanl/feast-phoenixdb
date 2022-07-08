@@ -1,6 +1,6 @@
-project: test_custom
+project: test_phoenixdb
 registry: data/registry.db
 provider: local
 online_store:
-  type: feast_custom_online_store.mysql_online_store.MySQLOnlineStore
+  type: feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore
   host: http://localhost:8765

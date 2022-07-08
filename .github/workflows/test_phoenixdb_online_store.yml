@@ -1,7 +1,7 @@
-name: test-custom-online-store
+name: test-phoenixdb-online-store
 on: [push, pull_request]
 jobs:
-  test-custom-online-store:
+  test-phoenixdb-online-store:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -28,4 +28,4 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run tests
-        run: pytest test_custom_online_store.py
+        run: pytest test_phoenixdb_online_store.py

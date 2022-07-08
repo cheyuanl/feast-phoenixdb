@@ -1,35 +1,20 @@
 # Feast Custom Online Store
-[![test_custom_online_store](https://github.com/cheyuanl/feast-phoenixdb/actions/workflows/test_custom_online_store.yml/badge.svg?branch=main)](https://github.com/cheyuanl/feast-phoenixdb/actions/workflows/test_custom_online_store.yml)
+[![test_phoenixdb_online_store](https://github.com/cheyuanl/feast-phoenixdb/actions/workflows/test_phoenixdb_online_store.yml/badge.svg?branch=main)](https://github.com/cheyuanl/feast-phoenixdb/actions/workflows/test_phoenixdb_online_store.yml)
 
 ### Overview
 
-This repository demonstrates how developers can create their own custom `online store`s for Feast. Custom online stores allow users to use any underlying 
-data store to store features for low-latency retrieval, typically needed during model inference.
+This repository implements Feast online store plugin for PhoenixDB. 
 
-### Why create a custom online store?
+### Testing the online store in this repository
 
-Feast materializes data to online stores for low-latency lookup at model inference time. Typically, key-value stores are used for 
-the online stores, however relational databases can be used for this purpose as well.
-
-Feast comes with some online stores built in, e.g, Sqlite, Redis, DynamoDB and Datastore. However, users can develop their
-own online stores by creating a class that implements the contract in the [OnlineStore class](https://github.com/feast-dev/feast/blob/master/sdk/python/feast/infra/online_stores/online_store.py#L26).
-
-### What is included in this repository?
-
-* [feast_custom_online_store/](feast_custom_online_store): An example of a custom online store, `MySQLOnlineStore`, which implements `OnlineStore`. This example online store uses MySQL as the backing database.
-* [feature_repo/](feature_repo): A simple feature repository that is used to test the custom online store. The repository has been configured to use the `MySQLOnlineStore` as part of it's `feature_store.yaml`
-* [test_custom_online_store.py](test_custom_online_store.py): A test case that uses `MySQLOnlineStore` through the `feature_repo/`
-
-### Testing the custom online store in this repository
-
-Run the following commands to test the custom online store ([MySQLOnlineStore](https://github.com/feast-dev/feast-custom-online-store-demo/blob/master/feast_custom_online_store/mysql.py))
+Run the following commands to test PhoenixDB online store ([PhoenixDBOnlineStore](https://github.com/cheyuanl/feast-phoenixdb/blob/master/feast_phoenixdb_online_store/phoenixdb_online_store.py))
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ```
-pytest test_custom_online_store.py
+pytest test_phoenixdb_online_store.py
 ```
 
 It is also possible to run a Feast CLI command, which interacts with the online store. It may be necessary to add the 
@@ -47,7 +32,9 @@ Deploying infrastructure for driver_hourly_stats
 ```
 $ PYTHONPATH=$PYTHONPATH:/$(pwd) feast -c feature_repo materialize-incremental 2021-08-19T22:29:28
 ```
-```Materializing 1 feature views to 2021-08-19 15:29:28-07:00 into the feast_custom_online_store.mysql.MySQLOnlineStore online store.
+
+```
+Materializing 1 feature views to 2021-08-19 15:29:28-07:00 into the feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore online store.
 
 driver_hourly_stats from 2020-08-24 05:23:49-07:00 to 2021-08-19 15:29:28-07:00:
 100%|████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00, 120.59it/s]
@@ -77,9 +64,9 @@ The Feast universal tests can be run with the command
 make test-python-universal
 ```
 
-If the command is run immediately, the tests should fail. The tests are parametrized based on the `FULL_REPO_CONFIGS` variable defined in `sdk/python/tests/integration/feature_repos/repo_configuration.py`. To overwrite these configurations, you can simply create your own file that contains a `FULL_REPO_CONFIGS`, and point Feast to that file by setting the environment variable `FULL_REPO_CONFIGS_MODULE` to point to that file. In this repo, the file that overwrites `FULL_REPO_CONFIGS` is `feast_custom_online_store/feast_tests.py`, so you would run
+If the command is run immediately, the tests should fail. The tests are parametrized based on the `FULL_REPO_CONFIGS` variable defined in `sdk/python/tests/integration/feature_repos/repo_configuration.py`. To overwrite these configurations, you can simply create your own file that contains a `FULL_REPO_CONFIGS`, and point Feast to that file by setting the environment variable `FULL_REPO_CONFIGS_MODULE` to point to that file. In this repo, the file that overwrites `FULL_REPO_CONFIGS` is `feast_phoenixdb_online_store/feast_tests.py`, so you would run
 ```
-export FULL_REPO_CONFIGS_MODULE='feast_custom_online_store.feast_tests'
+export FULL_REPO_CONFIGS_MODULE='feast_phoenixdb_online_store.feast_tests'
 make test-python-universal
 ```
-to test the MySQL online store against the Feast universal tests. You should notice that some of the tests actually fail; this indicates that there is a mistake in the implementation of this online store!
+to test the PhoenixDB online store against the Feast universal tests. You should notice that some of the tests actually fail; this indicates that there is a mistake in the implementation of this online store!
