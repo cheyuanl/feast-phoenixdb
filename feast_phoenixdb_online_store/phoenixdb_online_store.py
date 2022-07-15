@@ -47,8 +47,11 @@ class PhoenixDBOnlineStore(OnlineStore):
         assert isinstance(online_store_config, PhoenixDBOnlineStoreConfig)
 
         if not self._conn:
+            opts = opts = {'authentication': 'BASIC', 
+                           'avatica_user': online_store_config.user, 
+                           'avatica_password': online_store_config.password}
             self._conn = phoenixdb.connect(
-                url=online_store_config.host or "http://localhost:8765", autocommit=True
+                url=online_store_config.host or "http://localhost:8765", autocommit=True, **opts
             )
         return self._conn
 
@@ -193,3 +196,4 @@ def _to_naive_utc(ts: datetime):
         return ts
     else:
         return ts.astimezone(pytz.utc).replace(tzinfo=None)
+
