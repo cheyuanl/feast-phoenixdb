@@ -12,7 +12,7 @@ setup(
     packages=find_packages(include=["feast_phoenixdb_online_store"]),
     install_requires=[
         "phoenixdb==1.1",
-        "feast==0.12.1"
+        "feast==0.17"
     ],
     license="Apache",
 )

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Sequence, Union, List, Optional, Tuple, Dict, Callable, Any
 
 import pytz
-from feast import RepoConfig, FeatureTable, FeatureView, Entity
+from feast import RepoConfig, FeatureView, Entity
 from feast.infra.key_encoding_utils import serialize_entity_key
 from feast.infra.online_stores.online_store import OnlineStore
 from feast.protos.feast.types.EntityKey_pb2 import EntityKey as EntityKeyProto
@@ -47,9 +47,9 @@ class PhoenixDBOnlineStore(OnlineStore):
         assert isinstance(online_store_config, PhoenixDBOnlineStoreConfig)
 
         if not self._conn:
-            opts = opts = {'authentication': 'BASIC', 
-                           'avatica_user': online_store_config.user, 
-                           'avatica_password': online_store_config.password}
+            opts = opts = {'authentication': 'SPNEGO', 
+                           'principal': online_store_config.user, 
+                           'keytab': online_store_config.password}
             self._conn = phoenixdb.connect(
                 url=online_store_config.host or "http://localhost:8765", autocommit=True, **opts
             )
@@ -58,7 +58,7 @@ class PhoenixDBOnlineStore(OnlineStore):
     def online_write_batch(
         self,
         config: RepoConfig,
-        table: Union[FeatureTable, FeatureView],
+        table: FeatureView,
         data: List[
             Tuple[EntityKeyProto, Dict[str, ValueProto], datetime, Optional[datetime]]
         ],
@@ -108,7 +108,7 @@ class PhoenixDBOnlineStore(OnlineStore):
     def online_read(
         self,
         config: RepoConfig,
-        table: Union[FeatureTable, FeatureView],
+        table: FeatureView,
         entity_keys: List[EntityKeyProto],
         requested_features: Optional[List[str]] = None,
     ) -> List[Tuple[Optional[datetime], Optional[Dict[str, ValueProto]]]]:
@@ -144,8 +144,8 @@ class PhoenixDBOnlineStore(OnlineStore):
     def update(
         self,
         config: RepoConfig,
-        tables_to_delete: Sequence[Union[FeatureTable, FeatureView]],
-        tables_to_keep: Sequence[Union[FeatureTable, FeatureView]],
+        tables_to_delete: Sequence[FeatureView],
+        tables_to_keep: Sequence[FeatureView],
         entities_to_delete: Sequence[Entity],
         entities_to_keep: Sequence[Entity],
         partial: bool,
@@ -173,7 +173,7 @@ class PhoenixDBOnlineStore(OnlineStore):
     def teardown(
         self,
         config: RepoConfig,
-        tables: Sequence[Union[FeatureTable, FeatureView]],
+        tables: Sequence[FeatureView],
         entities: Sequence[Entity],
     ):
         conn = self._get_conn(config)
@@ -187,7 +187,7 @@ class PhoenixDBOnlineStore(OnlineStore):
             cur.execute(f"DROP TABLE IF EXISTS {_table_id(project, table)}")
 
 
-def _table_id(project: str, table: Union[FeatureTable, FeatureView]) -> str:
+def _table_id(project: str, table: FeatureView) -> str:
     return f"{project}_{table.name}"
 
 

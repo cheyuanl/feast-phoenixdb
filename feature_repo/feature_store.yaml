@@ -3,6 +3,6 @@ registry: data/registry.db
 provider: local
 online_store:
   type: feast_phoenixdb_online_store.phoenixdb_online_store.PhoenixDBOnlineStore
-  host: https://cod-127o17zrfkjqt-gateway0.eng-ml-d.xcu2-8y8x.dev.cldr.work/cod-127o17zrfkjqt/cdp-proxy-api/avatica/?serialization=PROTOBUF
-  user: csso_cheyuanl
-  password: Cloudera2021@
+  host: https://cod-qzyp4rr0ff61-worker0.eng-ml-i.svbr-nqvp.int.cldr.work:8765
+  password: /tmp/krb5cc_8536
+  user: ENG-ML-D.XCU2-8Y8X.DEV.CLDR.WORK@ENG-ML-D.XCU2-8Y8X.DEV.CLDR.WORK
